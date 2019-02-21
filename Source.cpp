@@ -874,18 +874,18 @@ void task33()
 {
 	double(*ukazat[3])(double) = { f, g, h };
 	unsigned int ch, len = sizeof(ukazat) / sizeof(ukazat);
-do
-{
-	cout << " Нажмите 0 - для вычесления квадратного корня\n ";
-	cout << "Нажмите 1 - для вычесления куба\n ";
-	cout << "Нажмите 2 - для вычесления синуса числа\n ";
-	cin >> ch;
-	cout << endl;
-} while (ch >= 3);
-double x;
+	do
+	{
+		cout << " Нажмите 0 - для вычесления квадратного корня\n ";
+		cout << "Нажмите 1 - для вычесления куба\n ";
+		cout << "Нажмите 2 - для вычесления синуса числа\n ";
+		cin >> ch;
+		cout << endl;
+	} while (ch >= 3);
+	double x;
 	cout << "Введите значение x: ";
 	cin >> x;
-cout << "Результат: " << ukazat[ch](x) <<endl;
+	cout << "Результат: " << ukazat[ch](x) << endl;
 }
 
 //**********************************************************************************************************************************************
@@ -893,11 +893,11 @@ cout << "Результат: " << ukazat[ch](x) <<endl;
 //Первая функция ищет простые числа и заносит их в новый массив, вторая – все числа кратные трем, третья – все четные числа
 //Затем напишите функцию, которая принимает указатель на одну из этих функций, а указатель на массив и количество элементов. 
 //Добавьте меню, в котором пользователь может выбрать желаемую операцию. Простое число – это число, которое делиться ТОЛЬКО на 1 и на себя (2, 5, 7, 11 и т.д.).
-void print_array(int * array, int count)
+void print_array(int *array, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		cout << array[i] << " ";
+		cout << array[i] <<" ";
 	}
 	cout << endl;
 }
@@ -913,9 +913,9 @@ bool is_prime(int n)
 	}
 	return true;
 }
-int * get_primes(const int * array, int count, int & outCount) 
+int *get_primes(const int *array, int count, int &outCount) 
 {
-	int * result = new int[count];
+	int  *result = new int[count];
 	outCount = 0;
 	for (int i = 0; i < count; i++)
 	{
@@ -927,9 +927,9 @@ int * get_primes(const int * array, int count, int & outCount)
 	}
 	return result;
 }
-int * get_divisible_3(const int * array, int count, int & outCount) 
+int *get_divisible_3(const int *array, int count, int &outCount) 
 {
-	int * result = new int[count];
+	int *result = new int[count];
 	outCount = 0;
 	for (int i = 0; i < count; i++)
 	{
@@ -941,9 +941,9 @@ int * get_divisible_3(const int * array, int count, int & outCount)
 	}
 	return result;
 }
-int * get_even(const int * array, int count, int & outCount) 
+int *get_even(const int *array, int count, int &outCount) 
 {
-	int * result = new int[count];
+	int *result = new int[count];
 	outCount = 0;
 	for (int i = 0; i < count; i++) 
 	{
@@ -957,7 +957,7 @@ int * get_even(const int * array, int count, int & outCount)
 }
 void task34()
 {
-	typedef int * (*function_t)(const int *, int, int &);
+	typedef int *(*function_t)(const int *, int, int &);
 	function_t functions[3] = { get_primes, get_divisible_3, get_even };
 	const int COUNT = 20;
 	int array[COUNT];
@@ -965,20 +965,23 @@ void task34()
 	{
 		array[i] = rand() % 100;
 	}
-	cout << "init array: " << endl;
 	print_array(array, COUNT);
 	unsigned int code;
-	do {
-		cout << "0 - простые числа, 1 - числа кратные трем, 2 - четные числа. 3 - Выход" << endl;
+	do
+	{
+		cout << "0 - простые числа" << endl;
+		cout << "1 - числа кратные трем" << endl;
+		cout << "2 - четные числа" << endl;
+		cout << "3 - Выход" << endl;
 		cin >> code;
 		if (code < 3)
 		{
 			int outCount;
 			int * p = functions[code](array, COUNT, outCount);
 			print_array(p, outCount);
-delete[]p;
-}
-} while (code != 3);
+			delete[] p;
+		}
+	} while (code != 3);
 }
 
 //*******************************************************************************************************************************************************
@@ -1055,6 +1058,11 @@ void task40()
 
 }
 
+//*******************************************************************************************************************************************************************
+//
+
+
+
 
 
 int main()
@@ -1068,27 +1076,48 @@ start:
 	scanf_s("%d", &task);
 	switch (task)
 	{
-	  case 1: {task1(); }break;                     case 21: {task21(); }break;
-	  case 2: {task2(); }break;                     case 22: {task22(); }break;
-	  case 3: {task3(); }break;                     case 23: {task23(); }break;
-	  case 4: {task4(); }break;                     case 24: {task24(); }break;
-	  case 5: {task5(); }break;                     case 25: {task25(); }break;
-	  case 6: {task6(); }break;                     case 26: {task26(); }break;          
-	  case 7: {task7(); }break;                     case 27: {task27(); }break;
-	  case 8: {task8(); }break;                     case 28: {task28(); }break;
-	  case 9: {task9(); }break;                     case 29: {task29(); }break;
-	case 10: {task10(); }break;                     case 30: {task30(); }break;
-	case 11: {task11(); }break;                     case 31: {task31(); }break; 
-	case 12: {task12(); }break;                     case 32: {task32(); }break;
-	case 13: {task13(); }break;                     case 33: {task33(); }break;
-	case 14: {task14(); }break;                     case 34: {task34(); }break;
-	case 15: {task15(); }break;                     case 35: {task35(); }break;
-	case 16: {task16(); }break;                     case 36: {task36(); }break;
-	case 17: {task17(); }break;                     case 37: {task37(); }break;
-	case 18: {task18(); }break;                     case 38: {task38(); }break;
-	case 19: {task19(); }break;                     case 39: {task39(); }break;
-	case 20: {task20(); }break;                     case 40: {task40(); }break;
-	
+	case 1: {task1(); }break;                     
+	case 2: {task2(); }break;                   
+	case 3: {task3(); }break;                    
+	case 4: {task4(); }break;                   
+	case 24: {task24(); }break;
+	case 5: {task5(); }break;                     
+	case 25: {task25(); }break;
+	case 6: {task6(); }break;                    
+	case 26: {task26(); }break;          
+	case 7: {task7(); }break;                     
+	case 27: {task27(); }break;
+    case 8: {task8(); }break;                    
+    case 28: {task28(); }break;
+	case 9: {task9(); }break;                    
+	case 29: {task29(); }break;
+	case 10: {task10(); }break;                   
+	case 30: {task30(); }break;
+	case 11: {task11(); }break;                   
+	case 31: {task31(); }break; 
+	case 12: {task12(); }break;                    
+	case 32: {task32(); }break;
+	case 13: {task13(); }break;                   
+	case 33: {task33(); }break;
+	case 14: {task14(); }break;                    
+	case 34: {task34(); }break;
+	case 15: {task15(); }break;                    
+	case 35: {task35(); }break;
+	case 16: {task16(); }break;                   
+	case 36: {task36(); }break;
+	case 17: {task17(); }break;                   
+	case 37: {task37(); }break;
+	case 18: {task18(); }break;                   
+	case 38: {task38(); }break;
+	case 19: {task19(); }break;                   
+	case 39: {task39(); }break;
+	case 20: {task20(); }break;                  
+	case 40: {task40(); }break;
+	case 21: {task21(); }break;
+    case 22: {task22(); }break;
+    case 23: {task23(); }break;
+
+
 	default:
 		break;
 	}

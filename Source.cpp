@@ -1,75 +1,87 @@
-#include <iostream>
-#include <cmath>
-#include <fstream>
+#include<iostream>
+#include<locale.h>
+#include<fstream>
+#include<string>
+
 using namespace std;
-int buf_size = 0;
 int cur_size = 0;
-
-
-struct Date 
+int buf_size = 0;
+union number
 {
-	int day, month, year;
-	void print() 
-	{
-		cout << day << "/" << month << "/" << year << " ";
-	}
+	short int number_n;
+	char number_s[10];
 };
 
-struct Man
+struct car
 {
-	char surname[30];
-	char name[30];
-	Date date_of_birth;
-	void print() 
+	char color[30];
+	char model[30];
+	char flag;
+	number car_number;
+	void print()
 	{
-		cout << surname << " " << name << " ";
-		date_of_birth.print();
+		cout << color << " " << model << " ";
+		if (flag == 's')
+		{
+			cout << car_number.number_s;
+		}
+		else
+		{
+			cout << car_number.number_n;
+		}
 		cout << endl;
 	}
 };
 
-void add(Man *&ms, Man el) 
+void add(car *&cs, car el)
 {
-	if (buf_size == 0) 
+
+	if (buf_size == 0)
 	{
 		buf_size = 4;
-		ms = new Man[buf_size];
+		cs = new car[buf_size];
 	}
 	else
 	{
-		if (cur_size == buf_size) 
+		if (cur_size == buf_size)
 		{
 			buf_size *= 2;
-			Man* tmp = new Man[buf_size];
+			car *tmp = new car[buf_size];
 			for (int i = 0; i < cur_size; i++)
 			{
-				tmp[i] = ms[i];
+				tmp[i] = cs[i];
 			}
-			delete[] ms;
-			ms = tmp;
+			delete[] cs;
+			cs = tmp;
 		}
 	}
-	ms[cur_size++] = el;
+	cs[cur_size++] = el;
 }
-void 
-int main() 
+int main()
 {
-	ifstream in_file("in.txt");
-	Man* ms=0;
-	Man tmp_man;
-	char c;
-
+	setlocale(LC_ALL, "");
+	ifstream in_file("text.txt");
+	car *cs = 0;
+	car tmp_car;
 	while (!in_file.eof())
 	{
-		in_file >> tmp_man.name >> tmp_man.surname >> tmp_man.date_of_birth.day >> c >>
-			tmp_man.date_of_birth.month >> c >> tmp_man.date_of_birth.year;
-		add(ms, tmp_man);
+		in_file >> tmp_car.color >> tmp_car.model >> tmp_car.flag;
+		if (tmp_car.flag == 's')
+		{
+			in_file >> tmp_car.car_number.number_s;
+		}
+		else
+		{
+			in_file >> tmp_car.car_number.number_n;
+			add(cs, tmp_car);
+		}
 	}
-	
 	for (int i = 0; i < cur_size; i++)
 	{
-		ms[i].print();
+		cs[i].print();
 	}
+
+
 	system("pause");
 	return 0;
 }

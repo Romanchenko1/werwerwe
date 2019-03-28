@@ -1,136 +1,129 @@
 #include<iostream>
-#include<cmath>
-#include<fstream>
+#include<locale>
 #include<time.h>
-#include<string>
-#include<locale.h>
+#include<fstream>
+#include<cmath>
+#include<cstring>
+#include<string.h>
+#include<bitset>
 using namespace std;
-#define chet(a)(a%2==0)
-#define setlocale setlocale(LC_ALL, "");
-#define srand srand(time(NULL));
-int buf_size = 0;
-int cur_size = 0;
-void task1()
+#define pause system("pause");
+ifstream fin("text.txt");
+ofstream fout("text.txt");
+//57.Разработайте программу <<телефонный справочник>>.Создайте структуру<<запись>>(номер телефона,ФИО).
+//Номер телефона представлен битовыми полями(код города и три двузначных числа).
+//А)**Сщздайте массив из 10 экземпляров структур<< запись >> и реализуйте для него следующие функции:
+//1.отредактировать записи
+//2.печать всех телефонов
+//3.сортировка по ФИО
+//Б)***Создайте массив экземпляров структуры << Запись >> и реализуйте для него следующие функции
+//1.добавить запись
+//2.отредактировать запись
+//3.удалить запись
+//4.печать всех телефонов
+//5.сортировка по ФИО
+//6.сортировка по номеру телефона
+
+struct record
 {
-	int a;
-	cin >> a;
-	chet(a);
-	cout << chet(a) << endl;
+	char surname[30]; //Фамилия абонента
+	char name[30]; //Имя абонента
+	char patronymic[30]; //Отчество абонента
+	int code : 16; //код города
+	int number : 32; //номер телефона
+};
+
+void imput(record *arr, int N) //запись информации в массив arr
+{
+	
+		int A[10]; //массив для записи битовых полей
+		for (int i = 0; i < N; i++)
+		{
+			cout << endl;
+			cin.ignore();
+			setlocale(LC_ALL, "rus");
+			cout << "Введите Фамилию: ";
+			cin>>arr[i].surname; //Вводим фамилию
+			fout << arr[i].surname<<" "; //записываем введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите Имя: ";
+			cin >> arr[i].name; //Вводим имя
+			fout << arr[i].name << " "; //записываем введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите Отчество: ";
+			cin >> arr[i].patronymic; //Вводим отчество
+			fout << arr[i].patronymic << endl;  //переносим введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите код города: ";
+			cin>>A[i]; //записываем код города в массив целых чисел
+			arr[i].code = A[i]; //присваеваем битовому массиву массив А
+
+			cout << "Введите номер телефона: ";
+			cin >> A[i]; //записываем номер телефона в массив целых чисел
+			arr[i].number = A[i]; //присваеваем битовому массиву массив А
+			
+			fout << "Номер: ";
+			fout << arr[i].code; //переносим код города в текстовой фаил
+			fout << arr[i].number; //переносим номер телефона в текстовой фаил
+			fout << endl;
+		}
 }
 
-
-struct flat
+void sort_surname(record *arr, int N) //сортировка по фамилии
 {
-	int flat_no : 9, rooms : 4, area : 9;
-	void print()
+	for (int i = 0; i < N-1; i++)
 	{
-		cout << flat_no << " " << rooms << " " << area << endl;
-	}
-};
-
-struct home
-{
-	char home_no[30];
-	int flat_amout : 9;
-	flat* fs = NULL;
-	void print() 
-	{
-		cout << home_no << endl; 
-		if (fs != NULL)
-		for (int i = 0; i < flat_amout; i++)
+		for (int j = 0; j < N-1; j++)
 		{
-			fs[i].print();
-		}
-	}
-};
-
-template<typename T>
-void add(T*&fs, T el)
-{
-	if (buf_size == 0)
-	{
-		buf_size = 4;
-		fs = new T[buf_size];
-	}
-	else
-	{
-		if (cur_size == buf_size)
-		{
-			buf_size *= 2;
-			T *tmp = new T[buf_size];
-			for (int i = 0; i < cur_size; i++)
+			if (strcmp(arr[j].surname, arr[j + 1].surname) == 1)
 			{
-				tmp[i] = fs[i];
+				swap(arr[j], arr[j + 1]);
 			}
-			delete[] fs;
-			fs = tmp;
 		}
 	}
-	fs[cur_size++] = el;
-}
-
-
-
-void task2()
-{
-	int tmp;
-	flat el;
-	ifstream f("in.txt");
-
-	flat *s = 0;
-	while (!f.eof())
+	for (int i = 0; i < N; i++) //Вывод отсортированного массива в консоль и в текстовой фаил
 	{
-		f >> tmp;
-		el.flat_no = tmp;
-		f >> tmp;
-		el.rooms = tmp;
-		f >> tmp;
-		el.area = tmp;
-		add(s, el);
-	}
-	for (int i = 0; i < cur_size; i++)
-	{
-		s[i].print();
+		cout << endl;
+		cout << arr[i].surname << " ";
+		cout << arr[i].name << " ";
+		cout << arr[i].patronymic << " ";
+		cout << endl;
+		cout << arr[i].code << " ";
+		cout << arr[i].number << endl;
+
+		fout << endl;
+		fout << arr[i].surname <<" ";
+		fout << arr[i].name << " ";
+		fout << arr[i].patronymic << " ";
+		fout << endl;
+		fout << arr[i].code << " ";
+		fout << arr[i].number << endl;
+
 	}
 }
 
-//20.**Разработайте структуру «Квартира»(номер квартиры, кол - во комнат, общая площадь).Разработайте структуру «Дом»(номер, кол - во квартир, массив квартир).
-//Создайте экземпляр структуры  и реализуйте для него следующие функции :
-//•	Печать всех квартир
-//•	Добавление квартиры
-//•	Удаление квартиры
-//Примечание : массив квартир можно сделать статическим.
-
-void task3()
+void surt_number(record *arr, int N)
 {
-	int tmp;
-	flat el;
-	home home_el;
-	ifstream fin("in.txt");
-	home* hs = 0;
-	while (!fin.eof())
+	int A[50];
+
+	for (int i = 0; i < N; i++)
 	{
-		fin >> home_el.home_no >> tmp;
-		home_el.flat_amout = tmp;
-		home_el.fs = new flat[tmp];
-		for (int i = 0; i < home_el.flat_amout; i++)
+		A[i] = arr[i].number;
+
+	}
+	for (int i = 0; i < N - 1; i++)
+	{
+		for (int j = 0; j < N - 1; j++)
 		{
-			fin >> tmp;
-			home_el.fs[i].flat_no = tmp;
-
-			fin >> tmp;
-			home_el.fs[i].rooms = tmp;
-
-			fin >> tmp;
-			home_el.fs[i].area = tmp;
+			if (strcmp(A[j].number, A[j + 1].number) == 1)
+			{
+				swap(arr[j], arr[j + 1]);
+			}
 		}
-		add(hs,home_el);
 	}
-	for (int i = 0; i < cur_size; i++)
-	{
-		hs[i].print();
-	}
-
 }
 
 
@@ -139,38 +132,37 @@ void task3()
 
 int main()
 {
-	setlocale
-	srand
-	int task;
-	int flag;
+	setlocale(LC_ALL, "rus");
+		int N;
+		cin >> N;
+		record *arr = new record[N]; //создание динамического массива
+	Menu: //меню программы
+		int number = 0;
+		cout << "\t\t\tМеню" << endl;
+		cout << "Для ввода данных нажмите 1" << endl;
+		cout << "Для сортировки данных по фамилии нажмите 2" << endl;
 
-start:
-
-	cout << "Введите номер задания->";
-
-	cin >> task;
-
-	switch (task)
-	{
-	case 1: {task1(); }break;
-	case 2: {task2(); }break;
-	case 3: {task3(); }break;
-	//case 4: {task4(); }break;
-	//case 5: {task5(); }break;
-	//case 6: {task6(); }break;
-	
-	default:
-		break;
-	}
-
-	cout << "чтобы продолжить нажмите 1 ->";
-
-	cin >> flag;
-
-	if (flag == 1)
-	{
-		goto start;
-	}
-
-	system("pause");
+		cout << "Для выхода из программы нажмите 3" << endl;
+		cin >> number;
+		if (number > 4) //если пользователь введет неверное число программа вернет его в начало меню
+		{
+			cout << "Ошибка" << endl;
+			goto Menu;
+		}
+		switch (number)
+		{
+		case 1:goto A; break;
+		case 2:goto B; break;
+		case 3:goto C; break;
+		default:
+			break;
+		}
+A:
+		imput(arr, N); //вызов функции ввода данных
+goto Menu;
+B:
+		sort_surname(arr, N); //вызов функции сортировки
+		goto Menu;
+C:
+	pause
 }

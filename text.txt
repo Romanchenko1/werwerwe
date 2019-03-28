@@ -1,0 +1,168 @@
+#include<iostream>
+#include<locale>
+#include<time.h>
+#include<fstream>
+#include<cmath>
+#include<cstring>
+#include<string.h>
+#include<bitset>
+using namespace std;
+#define pause system("pause");
+ifstream fin("text.txt");
+ofstream fout("text.txt");
+//57.Разработайте программу <<телефонный справочник>>.Создайте структуру<<запись>>(номер телефона,ФИО).
+//Номер телефона представлен битовыми полями(код города и три двузначных числа).
+//А)**Сщздайте массив из 10 экземпляров структур<< запись >> и реализуйте для него следующие функции:
+//1.отредактировать записи
+//2.печать всех телефонов
+//3.сортировка по ФИО
+//Б)***Создайте массив экземпляров структуры << Запись >> и реализуйте для него следующие функции
+//1.добавить запись
+//2.отредактировать запись
+//3.удалить запись
+//4.печать всех телефонов
+//5.сортировка по ФИО
+//6.сортировка по номеру телефона
+
+struct record
+{
+	char surname[30]; //Фамилия абонента
+	char name[30]; //Имя абонента
+	char patronymic[30]; //Отчество абонента
+	int code : 16; //код города
+	int number : 32; //номер телефона
+};
+
+void imput(record *arr, int N) //запись информации в массив arr
+{
+	
+		int A[10]; //массив для записи битовых полей
+		for (int i = 0; i < N; i++)
+		{
+			cout << endl;
+			cin.ignore();
+			setlocale(LC_ALL, "rus");
+			cout << "Введите Фамилию: ";
+			cin>>arr[i].surname; //Вводим фамилию
+			fout << arr[i].surname<<" "; //записываем введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите Имя: ";
+			cin >> arr[i].name; //Вводим имя
+			fout << arr[i].name << " "; //записываем введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите Отчество: ";
+			cin >> arr[i].patronymic; //Вводим отчество
+			fout << arr[i].patronymic << endl;  //переносим введенную информацию в текстовой фаил
+			cout << endl;
+
+			cout << "Введите код города: ";
+			cin>>A[i]; //записываем код города в массив целых чисел
+			arr[i].code = A[i]; //присваеваем битовому массиву массив А
+
+			cout << "Введите номер телефона: ";
+			cin >> A[i]; //записываем номер телефона в массив целых чисел
+			arr[i].number = A[i]; //присваеваем битовому массиву массив А
+			
+			fout << "Номер: ";
+			fout << arr[i].code; //переносим код города в текстовой фаил
+			fout << arr[i].number; //переносим номер телефона в текстовой фаил
+			fout << endl;
+		}
+}
+
+void sort_surname(record *arr, int N) //сортировка по фамилии
+{
+	for (int i = 0; i < N-1; i++)
+	{
+		for (int j = 0; j < N-1; j++)
+		{
+			if (strcmp(arr[j].surname, arr[j + 1].surname) == 1)
+			{
+				swap(arr[j], arr[j + 1]);
+			}
+		}
+	}
+	for (int i = 0; i < N; i++) //Вывод отсортированного массива в консоль и в текстовой фаил
+	{
+		cout << endl;
+		cout << arr[i].surname << " ";
+		cout << arr[i].name << " ";
+		cout << arr[i].patronymic << " ";
+		cout << endl;
+		cout << arr[i].code << " ";
+		cout << arr[i].number << endl;
+
+		fout << endl;
+		fout << arr[i].surname <<" ";
+		fout << arr[i].name << " ";
+		fout << arr[i].patronymic << " ";
+		fout << endl;
+		fout << arr[i].code << " ";
+		fout << arr[i].number << endl;
+
+	}
+}
+
+void surt_number(record *arr, int N)
+{
+	int A[50];
+
+	for (int i = 0; i < N; i++)
+	{
+		A[i] = arr[i].number;
+
+	}
+	for (int i = 0; i < N - 1; i++)
+	{
+		for (int j = 0; j < N - 1; j++)
+		{
+			if (strcmp(A[j].number, A[j + 1].number) == 1)
+			{
+				swap(A[j], A[j + 1]);
+			}
+		}
+	}
+}
+
+
+
+
+
+int main()
+{
+	setlocale(LC_ALL, "rus");
+		int N;
+		cin >> N;
+		record *arr = new record[N]; //создание динамического массива
+	Menu: //меню программы
+		int number = 0;
+		cout << "\t\t\tМеню" << endl;
+		cout << "Для ввода данных нажмите 1" << endl;
+		cout << "Для сортировки данных по фамилии нажмите 2" << endl;
+
+		cout << "Для выхода из программы нажмите 3" << endl;
+		cin >> number;
+		if (number > 4) //если пользователь введет неверное число программа вернет его в начало меню
+		{
+			cout << "Ошибка" << endl;
+			goto Menu;
+		}
+		switch (number)
+		{
+		case 1:goto A; break;
+		case 2:goto B; break;
+		case 3:goto C; break;
+		default:
+			break;
+		}
+A:
+		imput(arr, N); //вызов функции ввода данных
+goto Menu;
+B:
+		sort_surname(arr, N); //вызов функции сортировки
+		goto Menu;
+C:
+	pause
+}
